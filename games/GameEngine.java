@@ -31,6 +31,7 @@ public class GameEngine {
 	private Timer timer;
 	private List<Boolean> circles;
 	private List<Boolean> crosses;
+	private boolean newGame;
 	
 	public GameEngine(GamePanel gamePanel, GameMenu gameMenu){
 		this.gamePanel = gamePanel;
@@ -39,9 +40,14 @@ public class GameEngine {
 		
 		circles = new ArrayList<Boolean>();
 		crosses = new ArrayList<Boolean>();
+		newGame = false;
 		
 		timer = new Timer(1000, new ActionListener() {
 			public void actionPerformed(ActionEvent e){
+				if(newGame){
+					newGame();
+				}
+				
 				for(int i = 0; i<9; i++){
 					circles.add(i, gridPanels.get(i).getCircle());
 					crosses.add(i, gridPanels.get(i).getCross());
@@ -56,6 +62,7 @@ public class GameEngine {
 					if(checkCross.containsAll(Arrays.asList(i))){
 						JOptionPane.showMessageDialog(null,
 								"Player 1 wins!","Winner!", JOptionPane.INFORMATION_MESSAGE);
+						newGame = true;
 					}
 				}
 				List<Integer> checkCircle = new ArrayList<Integer>();
@@ -68,11 +75,13 @@ public class GameEngine {
 					if(checkCircle.containsAll(Arrays.asList(i))){
 						JOptionPane.showMessageDialog(null,
 								"Player 2 wins!","Winner!", JOptionPane.INFORMATION_MESSAGE);
+						newGame = true;
 					}
 				}
 				if((checkCross.size() + checkCircle.size()) == 9){
 					JOptionPane.showMessageDialog(null,
 							"It was a Draw!","Draw!", JOptionPane.INFORMATION_MESSAGE);
+					newGame = true;
 				}
 			
 			}
@@ -80,6 +89,15 @@ public class GameEngine {
 		timer.start();
 	}
 	
+	
+	private void newGame(){
+		timer.stop();
+		newGame = false;
+		for(GridPanel gP: gridPanels){
+			gP.clearBoard();
+		}
+		timer.start();
+	}
 	
 	
 }

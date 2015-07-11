@@ -19,12 +19,14 @@ public class GridPanel extends JPanel implements MouseListener, ClickListener{
 	private boolean cross;
 	private boolean circle;
 	private boolean painted;
+	private boolean clear;
 	
 	public GridPanel(GamePanel gp){
 		gamePanel = gp;
 		cross = false;
 		circle = false;
 		painted = false;
+		clear = false;
 		setBackground(Color.white);
 		addMouseListener(this);
 	}
@@ -43,10 +45,13 @@ public class GridPanel extends JPanel implements MouseListener, ClickListener{
 			g2.drawLine(x-r, y-r, x+r, y+r);
 			g2.drawLine(x+r, y-r, x-r, y+r);
 		}
+		x -= (r/2);
+		y -= (r/2);
 		if (circle){
-			x -= (r/2);
-			y -= (r/2);
 			g2.drawOval(x, y, r, r);
+		}
+		if(clear){
+			g.clearRect(x, y, r, r);
 		}
 
 	} 
@@ -107,6 +112,15 @@ public class GridPanel extends JPanel implements MouseListener, ClickListener{
 			return cross;
 		}
 		return false;
+	}
+	
+	public void clearBoard(){
+		clear = true;
+		circle = false;
+		cross = false;
+		painted = false;
+		repaint();
+		clear = false;
 	}
 
 }
