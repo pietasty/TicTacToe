@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public class GameEngine {
@@ -25,7 +26,6 @@ public class GameEngine {
 	};
 	
 	private GamePanel gamePanel;
-	private GameMenu gameMenu;
 	private List<GridPanel> gridPanels;
 	
 	private Timer timer;
@@ -33,16 +33,20 @@ public class GameEngine {
 	private List<Boolean> crosses;
 	private boolean newGame;
 	
-	public GameEngine(GamePanel gamePanel, GameMenu gameMenu){
+	private JPanel optionsPanel;
+	
+	public GameEngine(GamePanel gamePanel){
+		optionsPanel = new OptionsPanel();
+		displayOptions();
+		
 		this.gamePanel = gamePanel;
-		this.gameMenu = gameMenu;
 		gridPanels = gamePanel.getGridPanels();
 		
 		circles = new ArrayList<Boolean>();
 		crosses = new ArrayList<Boolean>();
 		newGame = false;
 		
-		timer = new Timer(1000, new ActionListener() {
+		timer = new Timer(500, new ActionListener() {
 			public void actionPerformed(ActionEvent e){
 				if(newGame){
 					newGame();
@@ -90,7 +94,7 @@ public class GameEngine {
 	}
 	
 	
-	private void newGame(){
+	public void newGame(){
 		timer.stop();
 		newGame = false;
 		for(GridPanel gP: gridPanels){
@@ -99,5 +103,12 @@ public class GameEngine {
 		timer.start();
 	}
 	
-	
+	public void displayOptions(){
+		String[] options = {"Start!","Cancel!"};
+		int n = JOptionPane.showOptionDialog(null, optionsPanel, "Options", JOptionPane.YES_NO_OPTION, 
+				JOptionPane.NO_OPTION, null, options, options[0]);
+		if(n == 0){
+			
+		}
+	}
 }

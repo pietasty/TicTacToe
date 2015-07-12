@@ -31,7 +31,7 @@ public class GamePanel extends JPanel {
 	public GamePanel() {
 		setLayout(new GridBagLayout());
 		setBackground(Color.white);
-		gridPanels = new ArrayList();
+		gridPanels = new ArrayList<GridPanel>();
 		
 		borderColour = Color.black;
 		borderSize = 10;

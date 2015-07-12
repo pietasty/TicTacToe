@@ -13,9 +13,12 @@ public class GameMenu extends JMenuBar{
 	private JMenu game;
 	private JMenu help;
 	
-	public GameMenu(){
+	private GameEngine gameEngine;
+	
+	public GameMenu(GameEngine gE){
 		addGameMenu();
 		addHelpMenu();
+		gameEngine = gE;
 		
 	}
 	
@@ -28,8 +31,7 @@ public class GameMenu extends JMenuBar{
 		JMenuItem newGame = new JMenuItem("New Game",KeyEvent.VK_F2);
 		newGame.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				//TODO
-				
+				gameEngine.newGame();
 			}
 	
 		});
@@ -51,7 +53,7 @@ public class GameMenu extends JMenuBar{
 		JMenuItem options = new JMenuItem("Options", KeyEvent.VK_F5);
 		options.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				//TODO
+				gameEngine.displayOptions();
 			}
 	
 		});

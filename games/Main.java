@@ -22,9 +22,9 @@ public class Main extends JFrame{
 		super("LoL Tic Tac Toe");
 		GamePanel gP = new GamePanel();
 		this.setContentPane(gP);
-		GameMenu gM = new GameMenu();
-		this.setJMenuBar(gM);
-		GameEngine gE = new GameEngine(gP,gM);
+		GameEngine gE = new GameEngine(gP);
+		//GameMenu gM = new GameMenu();
+		this.setJMenuBar(new GameMenu(gE));
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setSize(600, 600);
 		setLocationRelativeTo(null);
