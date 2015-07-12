@@ -1,5 +1,5 @@
 ================================================
-This is me reminding myself how to Program again
+This is me reminding myself how to program again
 ================================================
 
 Basic TicTacTac game
