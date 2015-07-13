@@ -23,11 +23,12 @@ public class Main extends JFrame{
 		GamePanel gP = new GamePanel();
 		this.setContentPane(gP);
 		GameEngine gE = new GameEngine(gP);
-		//GameMenu gM = new GameMenu();
 		this.setJMenuBar(new GameMenu(gE));
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setSize(600, 600);
 		setLocationRelativeTo(null);
+		setVisible(true);
+		gE.displayOptions();
 	}
 
 }

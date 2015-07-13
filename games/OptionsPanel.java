@@ -10,6 +10,8 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
+import constants.*;
+
 public class OptionsPanel extends JPanel{
 	
 	private JRadioButton onePlayer;
@@ -240,5 +242,33 @@ public class OptionsPanel extends JPanel{
 		twoCross.setEnabled(!b);
 	}
 	
+	public GameState gameState(){
+		if(onePlayer.isSelected()){
+			return GameState.ONEPLAYER;
+		}
+		return GameState.TWOPLAYER;
+	}
 	
+	public Difficulty whatDifficulty(){
+		if(easy.isSelected()){
+			return Difficulty.EASY;
+		} else if (impossible.isSelected()){
+			return Difficulty.IMPOSSIBLE;
+		}
+		return Difficulty.HARD;
+	}
+	
+	public PlayerOneToken whatToken(){
+		if (gameState() == GameState.ONEPLAYER){
+			if(oneCross.isSelected()){
+				return PlayerOneToken.CROSS;
+			} 
+			return PlayerOneToken.CIRCLE;
+		}
+		if(twoCross.isSelected()){
+			return PlayerOneToken.CROSS;
+		} 
+		return PlayerOneToken.CIRCLE;
+		
+	}
 }

@@ -9,6 +9,8 @@ import java.awt.event.MouseListener;
 
 import javax.swing.JPanel;
 
+import constants.GameState;
+import constants.PlayerOneToken;
 import event.ClickEvent;
 import event.ClickListener;
 
@@ -16,17 +18,20 @@ public class GridPanel extends JPanel implements MouseListener, ClickListener{
 	
 	private GamePanel gamePanel;
 	
+	private GameState gameState;
+	private PlayerOneToken token;
+	
 	private boolean cross;
 	private boolean circle;
 	private boolean painted;
-	private boolean clear;
+	private boolean check;
 	
 	public GridPanel(GamePanel gp){
 		gamePanel = gp;
 		cross = false;
 		circle = false;
 		painted = false;
-		clear = false;
+		check = false;
 		setBackground(Color.white);
 		addMouseListener(this);
 	}
@@ -50,22 +55,28 @@ public class GridPanel extends JPanel implements MouseListener, ClickListener{
 		if (circle){
 			g2.drawOval(x, y, r, r);
 		}
-		if(clear){
-			g.clearRect(x, y, r, r);
+		
+		if(check){
+			if(token == PlayerOneToken.CIRCLE){
+				cross = true;
+			} else {
+				cross = false;
+			}
+			check = false;
 		}
-
 	} 
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
 	}
-
 	@Override
 	public void mouseEntered(MouseEvent e) {
 	}
-
 	@Override
 	public void mouseExited(MouseEvent e) {
+	}
+	@Override
+	public void mouseReleased(MouseEvent e) {
 	}
 
 	@Override
@@ -78,10 +89,6 @@ public class GridPanel extends JPanel implements MouseListener, ClickListener{
 	}
 
 	@Override
-	public void mouseReleased(MouseEvent e) {
-	}
-
-	@Override
 	public void clickOccurred(ClickEvent e) {
 		if(!painted){
 			boolean x = e.getCross();
@@ -89,6 +96,45 @@ public class GridPanel extends JPanel implements MouseListener, ClickListener{
 			toggleToken(x,o);
 		}
 	}
+	
+	/**
+	 * @return True if a Circle is painted
+	 */
+	public boolean getCircle(){
+		if(painted){
+			return circle;
+		}
+		return false;
+	}
+	
+	/**
+	 * @return True if a Cross is painted
+	 */
+	public boolean getCross(){
+		if(painted){
+			return cross;
+		}
+		return false;
+	}
+	
+	public void clearBoard(){
+		circle = false;
+		cross = false;
+		painted = false;
+		repaint();
+	}
+	
+	public void setGameState(GameState gS){
+		gameState = gS;
+	}
+	
+	public void setToken(PlayerOneToken t){
+		token = t;
+		check = true;
+	}
+	
+	
+	//----------------------------------------------------
 	
 	private void toggleToken(boolean x, boolean o){
 		if(x){
@@ -99,28 +145,4 @@ public class GridPanel extends JPanel implements MouseListener, ClickListener{
 			circle = false;
 		}
 	}
-	
-	public boolean getCircle(){
-		if(painted){
-			return circle;
-		}
-		return false;
-	}
-	
-	public boolean getCross(){
-		if(painted){
-			return cross;
-		}
-		return false;
-	}
-	
-	public void clearBoard(){
-		clear = true;
-		circle = false;
-		cross = false;
-		painted = false;
-		repaint();
-		clear = false;
-	}
-
 }

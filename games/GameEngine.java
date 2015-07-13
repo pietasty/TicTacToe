@@ -10,6 +10,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import constants.*;
+
 public class GameEngine {
 	
 	private final static Integer[] WIN1 = {0,1,2};
@@ -25,19 +27,26 @@ public class GameEngine {
 		WIN1,WIN2,WIN3,WIN4,WIN5,WIN6,WIN7,WIN8
 	};
 	
+	private final static String PLAYERONEWIN = "Player 1 Wins!";
+	private final static String PLAYERTWOWIN = "Player 2 Wins!";
+	private final static String COMPUTERWIN = "The Computer Wins!";
+	
 	private GamePanel gamePanel;
 	private List<GridPanel> gridPanels;
 	
 	private Timer timer;
 	private List<Boolean> circles;
 	private List<Boolean> crosses;
-	private boolean newGame;
+	private Boolean newGame;
 	
-	private JPanel optionsPanel;
+	private OptionsPanel optionsPanel;
+	
+	private GameState gameState;
+	private Difficulty difficulty;
+	private PlayerOneToken token;
 	
 	public GameEngine(GamePanel gamePanel){
 		optionsPanel = new OptionsPanel();
-		displayOptions();
 		
 		this.gamePanel = gamePanel;
 		gridPanels = gamePanel.getGridPanels();
@@ -56,32 +65,58 @@ public class GameEngine {
 					circles.add(i, gridPanels.get(i).getCircle());
 					crosses.add(i, gridPanels.get(i).getCross());
 				}
+				
 				List<Integer> checkCross = new ArrayList<Integer>();
 				for(int i = 0; i<9;i++){
 					if(crosses.get(i)){
 						checkCross.add(i);
 					}
 				}
+				//Player with Crosses wins!
 				for(Integer[] i : WINCONDITION){
 					if(checkCross.containsAll(Arrays.asList(i))){
+						String s;
+						if(token == PlayerOneToken.CROSS){
+							s = PLAYERONEWIN;
+						} else {
+							if(gameState == GameState.TWOPLAYER){
+								s = PLAYERTWOWIN;
+							} else {
+								s = COMPUTERWIN;
+							}
+						}
 						JOptionPane.showMessageDialog(null,
-								"Player 1 wins!","Winner!", JOptionPane.INFORMATION_MESSAGE);
+								s,"Winner!", JOptionPane.INFORMATION_MESSAGE);
 						newGame = true;
 					}
 				}
+				
 				List<Integer> checkCircle = new ArrayList<Integer>();
 				for(int i = 0; i<9;i++){
 					if(circles.get(i)){
 						checkCircle.add(i);
 					}
 				}
+				//Player with Circles wins!
 				for(Integer[] i : WINCONDITION){
 					if(checkCircle.containsAll(Arrays.asList(i))){
+						String s;
+						if(token == PlayerOneToken.CIRCLE){
+							s = PLAYERONEWIN;
+						} else {
+							if(gameState == GameState.TWOPLAYER){
+								s = PLAYERTWOWIN;
+							} else {
+								s = COMPUTERWIN;
+							}
+						}
 						JOptionPane.showMessageDialog(null,
-								"Player 2 wins!","Winner!", JOptionPane.INFORMATION_MESSAGE);
+								s,"Winner!", JOptionPane.INFORMATION_MESSAGE);
 						newGame = true;
 					}
 				}
+				
+				//When a Draw happens!
 				if((checkCross.size() + checkCircle.size()) == 9){
 					JOptionPane.showMessageDialog(null,
 							"It was a Draw!","Draw!", JOptionPane.INFORMATION_MESSAGE);
@@ -91,6 +126,7 @@ public class GameEngine {
 			}
 		});
 		timer.start();
+		
 	}
 	
 	
@@ -99,6 +135,8 @@ public class GameEngine {
 		newGame = false;
 		for(GridPanel gP: gridPanels){
 			gP.clearBoard();
+			gP.setGameState(gameState);
+			gP.setToken(token);
 		}
 		timer.start();
 	}
@@ -108,7 +146,11 @@ public class GameEngine {
 		int n = JOptionPane.showOptionDialog(null, optionsPanel, "Options", JOptionPane.YES_NO_OPTION, 
 				JOptionPane.NO_OPTION, null, options, options[0]);
 		if(n == 0){
+			gameState = optionsPanel.gameState();
+			difficulty = optionsPanel.whatDifficulty();
+			token = optionsPanel.whatToken();
 			
+			newGame();
 		}
 	}
 }
