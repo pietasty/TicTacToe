@@ -3,6 +3,8 @@ package games;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -40,10 +42,20 @@ public class OptionsPanel extends JPanel{
 		
 		setUpOnePlayer();
 		setUpTwoPlayers();
+		
+		setUpInitialOptions();
 	}
 	
 	private void setUpOnePlayer(){
 		onePlayer = new JRadioButton("One Player");
+		onePlayer.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				onePlayer.setSelected(true);
+				twoPlayers.setSelected(false);
+				toggleOnePlayer(true);
+			}
+			
+		});
 		c.gridx = 0;
 		c.gridy = 0;
 		add(onePlayer,c);
@@ -78,23 +90,43 @@ public class OptionsPanel extends JPanel{
 		onePlayerDifficulty.add(text, c1);
 		
 		easy = new JRadioButton("Easy");
+		easy.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				easy.setSelected(true);
+				hard.setSelected(false);
+				impossible.setSelected(false);
+			}
+		});
 		c1.gridx = 0;
 		c1.gridy = 1;
 		c1.gridwidth = 1;
 		onePlayerDifficulty.add(easy, c1);
 		
 		hard = new JRadioButton("Hard");
+		hard.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				hard.setSelected(true);
+				easy.setSelected(false);
+				impossible.setSelected(false);
+			}
+		});
 		c1.gridx = 1;
 		c1.gridy = 1;
 		onePlayerDifficulty.add(hard, c1);
 		
 		impossible = new JRadioButton("Impossible");
+		impossible.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				impossible.setSelected(true);
+				hard.setSelected(false);
+				easy.setSelected(false);
+			}
+		});
 		c1.gridx = 2;
 		c1.gridy = 1;
 		onePlayerDifficulty.add(impossible, c1);
 	}
-	
-	
+
 	private void setUpOneStart(){
 		GridBagConstraints c2 = new GridBagConstraints();
 		c2.weightx = 1;
@@ -109,21 +141,40 @@ public class OptionsPanel extends JPanel{
 		onePlayerStart.add(text, c2);
 		
 		oneCircle = new JRadioButton("Circle o");
+		oneCircle.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				oneCircle.setSelected(true);
+				oneCross.setSelected(false);
+			}
+		});
 		c2.gridx = 0;
 		c2.gridy = 1;
 		c2.gridwidth = 1;
 		onePlayerStart.add(oneCircle, c2);
 		
 		oneCross = new JRadioButton("Cross x");
+		oneCross.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				oneCross.setSelected(true);
+				oneCircle.setSelected(false);
+			}
+		});
 		c2.gridx = 1;
 		c2.gridy = 1;
 		onePlayerStart.add(oneCross, c2);
 		
 	}
 	
-	
 	private void setUpTwoPlayers(){
 		twoPlayers = new JRadioButton("Two Players");
+		twoPlayers.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				twoPlayers.setSelected(true);
+				onePlayer.setSelected(false);
+				toggleOnePlayer(false);
+			}
+			
+		});
 		c.gridx = 1;
 		c.gridy = 0;
 		c.insets = new Insets(0,10,0,0);
@@ -133,7 +184,6 @@ public class OptionsPanel extends JPanel{
 		twoPlayersStart = new JPanel(new GridBagLayout());
 		c.gridx = 1;
 		c.gridy = 1;
-		//c.gridheight = 2;
 		add(twoPlayersStart,c);
 		
 		GridBagConstraints c3 = new GridBagConstraints();
@@ -149,15 +199,46 @@ public class OptionsPanel extends JPanel{
 		twoPlayersStart.add(text, c3);
 		
 		twoCircle = new JRadioButton("Circle o");
+		twoCircle.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				twoCircle.setSelected(true);
+				twoCross.setSelected(false);
+			}
+		});
 		c3.gridx = 0;
 		c3.gridy = 1;
 		c3.gridwidth = 1;
 		twoPlayersStart.add(twoCircle, c3);
 		
 		twoCross = new JRadioButton("Cross x");
+		twoCross.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				twoCross.setSelected(true);
+				twoCircle.setSelected(false);
+			}
+		});
 		c3.gridx = 1;
 		c3.gridy = 1;
 		twoPlayersStart.add(twoCross, c3);
 	}
+	
+	private void setUpInitialOptions(){
+		onePlayer.setSelected(true);
+		hard.setSelected(true);
+		oneCross.setSelected(true);
+		twoCross.setSelected(true);
+		toggleOnePlayer(true);
+	}
+	
+	private void toggleOnePlayer(boolean b){
+		easy.setEnabled(b);
+		hard.setEnabled(b);
+		impossible.setEnabled(b);
+		oneCircle.setEnabled(b);
+		oneCross.setEnabled(b);
+		twoCircle.setEnabled(!b);
+		twoCross.setEnabled(!b);
+	}
+	
 	
 }
